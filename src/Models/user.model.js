@@ -1,26 +1,21 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-/*
-name
 
-email (unique)
-
-password (hashed)
-
-address
-
-phone
-
-role (e.g., "customer")
-*/
 const userSchema = new mongoose.Schema(
   {
-    name: {
+    fullname: {
+      type: String,
+      trim: true,
+      required: true,
+    },
+    username: {
       type: String,
       unique: true,
       trim: true,
       required: true,
+      lowercase: true,
+      index: true,
     },
     email: {
       type: String,
@@ -63,5 +58,20 @@ const userSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+userSchema.pre("save", function (next) {
+  if (!this.isModified("password")) {
+    return next();
+  }
+  this.password = bcrypt.hash(this.password, 12);
+});
+
+userSchema.methods.passwordCheck = async function (password) {
+  return await bcrypt.compare(password, this.password);
+};
+
+userSchema.methods.generateToken = async function (data, secret, expiresIn) {
+  return await jwt.sign(data, secret, expiresIn);
+};
 
 export const User = mongoose.model("User", userSchema);
