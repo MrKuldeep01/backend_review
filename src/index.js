@@ -1,24 +1,21 @@
 // import mongoose from "mongoose";
 // import { DB_name } from "./constent.js";
-import config from "./../Config/index.js"
+import config from "./../Config/index.js";
 import { app } from "./app.js";
 import dotenv from "dotenv";
 dotenv.config();
 import connectToDB from "./DB/index.js";
-let port = config.port || 3000
+let port = config.port || 3000;
 
-connectToDB().then(()=>{
-    app.listen(port,()=>{
-        console.log("Application is listening on : ",port);
-    })
-}).catch((error)=>{
+connectToDB()
+  .then(() => {
+    app.listen(port, () => {
+      console.log("Application is listening on : ", port);
+    });
+  })
+  .catch((error) => {
     console.log(`Error: we are facing issue in our application :- ${error}`);
-})
-
-
-
-
-
+  });
 
 // (async function connectToDB() {
 //   try {
