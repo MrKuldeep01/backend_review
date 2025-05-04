@@ -1,10 +1,11 @@
 // import mongoose from "mongoose";
 // import { DB_name } from "./constent.js";
+import config from "./../Config/index.js"
 import { app } from "./app.js";
 import dotenv from "dotenv";
 dotenv.config();
 import connectToDB from "./DB/index.js";
-let port = process.env.PORT || 3000
+let port = config.port || 3000
 
 connectToDB().then(()=>{
     app.listen(port,()=>{
