@@ -1,3 +1,3 @@
 const DB_name = "DemoDB01";
-
-export {DB_name}
+const routeVersion = "/api/vi";
+export { DB_name, routeVersion };
